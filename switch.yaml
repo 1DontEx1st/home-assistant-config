@@ -1,0 +1,91 @@
+# Thanks to Petro for sharing his genius
+  - platform: template
+    switches:
+        # XBOX HARMONY ACTIVITY
+        xbox_one:
+          value_template: "{{ is_state_attr('remote.living_room', 'current_activity', 'Play XBOX ONE') }}"
+          turn_on:
+            service: remote.turn_on
+            data:
+              entity_id: remote.living_room
+              activity: 'Play XBOX ONE'
+          turn_off:
+            service: remote.turn_on
+            data:
+              entity_id: remote.living_room
+              activity: 'PowerOff'
+          friendly_name: "XBOX One"
+        
+        # SMART TV HARMONY ACTIVITY
+        smarttv:
+          value_template: "{{ is_state_attr('remote.living_room', 'current_activity', 'Watch Smart TV') }}"
+          turn_on:
+            service: remote.turn_on
+            data:
+              entity_id: remote.living_room
+              activity: 'Watch Smart TV'
+          turn_off:
+            service: remote.turn_on
+            data:
+              entity_id: remote.living_room
+              activity: 'PowerOff'
+          friendly_name: "Smart TV"
+        
+        # Watch TV HARMONY ACTIVITY
+        tv:
+          value_template: "{{ is_state_attr('remote.living_room', 'current_activity', 'Watch TV') }}"
+          turn_on:
+            service: remote.turn_on
+            data:
+              entity_id: remote.living_room
+              activity: 'Watch TV'
+          turn_off:
+            service: remote.turn_on
+            data:
+              entity_id: remote.living_room
+              activity: 'PowerOff'
+          friendly_name: "Watch TV"
+        
+        # SWITCH HARMONY ACTIVITY
+        switch:
+          value_template: "{{ is_state_attr('remote.living_room', 'current_activity', 'Play Switch') }}"
+          turn_on:
+            service: remote.turn_on
+            data:
+              entity_id: remote.living_room
+              activity: 'Play Switch'
+          turn_off:
+            service: remote.turn_on
+            data:
+              entity_id: remote.living_room
+              activity: 'PowerOff'
+          friendly_name: "Play Switch"
+        
+        # FIRE TV HARMONY ACTIVITY
+        firetv:
+          value_template: "{{ is_state_attr('remote.living_room', 'current_activity', 'Watch Fire TV') }}"
+          turn_on:
+            service: remote.turn_on
+            data:
+              entity_id: remote.living_room
+              activity: 'Watch Fire TV'
+          turn_off:
+            service: remote.turn_on
+            data:
+              entity_id: remote.living_room
+              activity: 'PowerOff'
+          friendly_name: "Watch Fire TV"
+
+        poweroff:
+          value_template: "{{ not is_state_attr('remote.living_room', 'current_activity', 'PowerOff') }}"
+          turn_on:
+            service: remote.turn_on
+            data:
+              entity_id: remote.living_room
+              activity: 'PowerOff'
+          turn_off:
+            service: remote.turn_on
+            data:
+              entity_id: remote.living_room
+              activity: 'PowerOff'
+

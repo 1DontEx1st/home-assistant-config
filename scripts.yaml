@@ -1,0 +1,4 @@
+refresh_customizations:
+  sequence:
+  - service: homeassistant.reload_core_config
+  - service: python_script.touch

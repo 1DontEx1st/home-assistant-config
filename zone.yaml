@@ -1,0 +1,25 @@
+- name: !secret darren_work_name
+  latitude: !secret darren_work_lat
+  longitude: !secret darren_work_long
+  radius: 152.4
+  icon: mdi:office-building
+- name: !secret lindsay_work_name
+  latitude: !secret lindsay_work_lat
+  longitude: !secret lindsay_work_long
+  radius: 152.4
+  icon: mdi:school
+- name: !secret dojo_name
+  latitude: !secret dojo_lat
+  longitude: !secret dojo_long
+  radius: 152.4
+  icon: mdi:karate
+- name: !secret gym_name
+  latitude: !secret gym_lat
+  longitude: !secret gym_long
+  radius: 152.4
+- name: Home
+  latitude: !secret home_lat
+  longitude: !secret home_long
+  radius: 250
+  icon: mdi:home-circle
+

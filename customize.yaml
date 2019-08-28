@@ -1,0 +1,64 @@
+sensor.nothingtoseehere_battery_level:
+  hidden: true
+sensor.nothingtoseehere_battery_state:
+  hidden: true
+person.darren:
+  entity_picture: /local/images/darren.png
+person.lindsay:
+  entity_picture: /local/images/lindsay.png
+device_tracker.lindsays_iphone:
+  hidden: true
+device_tracker.darreniphone:
+  hidden: true
+sensor.schlage_allegion_be469_touchscreen_deadbolt_burglar:
+  hidden: true
+sensor.schlage_allegion_be469_touchscreen_deadbolt_power_management:
+  hidden: true
+sensor.schlage_allegion_be469_touchscreen_deadbolt_system:
+  hidden: true
+sensor.schlage_allegion_be469_touchscreen_deadbolt_alarm_level:
+  hidden: true
+sensor.schlage_allegion_be469_touchscreen_deadbolt_alarm_type:
+  hidden: true
+sensor.schlage_allegion_be469_touchscreen_deadbolt_sourcenodeid:
+  hidden: true
+sensor.schlage_allegion_be469_touchscreen_deadbolt_access_control:
+  hidden: true
+sensor.lindsay_s_iphone_battery_level:
+  hidden: true
+sensor.lindsay_s_iphone_battery_state:
+  hidden: true
+zwave.zooz_zst10_s2_z_wave_plus_usb_stick:
+  hidden: true
+zwave.schlage_allegion_be469_touchscreen_deadbolt:
+  hidden: true
+remote.living_room:
+  hidden: true
+device_tracker.life360_darren:
+  hidden: true
+device_tracker.life360_lindsay:
+  hidden: true
+switch.xbox_one:
+  friendly_name: Xbox One
+  icon: mdi:xbox
+switch.firetv:
+  friendly_name: Fire TV
+  icon: mdi:television
+switch.smarttv:
+  friendly_name: Smart TV
+  icon: mdi:cast
+switch.switch:
+  friendly_name: Switch
+  icon: mdi:nintendo-switch
+switch.tv:
+  friendly_name: Xfinity TV
+  icon: mdi:television-classic
+switch.poweroff:
+  friendly_name: Power Off
+  icon: mdi:power
+sensor.harmony_activity:
+  friendly_name: Harmony Status
+sensor.xbox_current:
+  friendly_name: Xbox App
+sensor.recycling:
+  icon: mdi:recycle

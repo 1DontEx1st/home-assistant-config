@@ -1,0 +1,160 @@
+resources:
+  - url: /community_plugin/content-card-remote-control/content-card-remote-control.js
+    type: module
+  - url: /community_plugin/weather-card/weather-card.js
+    type: module
+  - url: /community_plugin/upcoming-media-card/upcoming-media-card.js
+    type: js
+  - url: /community_plugin/entity-attributes-card/entity-attributes-card.js
+    type: js
+  - url: /community_plugin/card-tools/card-tools.js
+    type: js
+  - url: /community_plugin/lovelace-card-templater/lovelace-card-templater.js
+    type: js
+title: Unicorn Circle
+views:
+  - badges:
+      - person.darren
+      - person.lindsay
+      - sensor.harmony_activity
+      - sensor.plex_now_playing
+      - sensor.plex
+      - sensor.hacs
+      - sun.sun
+    cards:
+      - entities:
+          - lock.schlage_allegion_be469_touchscreen_deadbolt_locked
+          - automation.side_door_unlocked
+        title: Door locks
+        type: entities
+      - entity: weather.dark_sky
+        type: custom:weather-card
+        icons: "/community_plugin/weather-card/icons/"
+#      - entities:
+#          - sensor.trash
+#          - sensor.recycling
+#        show_header_toggle: false
+#        title: Pickup
+#        type: entities
+      - type: 'custom:card-templater'
+        card:
+          type: horizontal-stack
+          cards:
+            - entity: sensor.trash
+              name: Trash
+              type: sensor
+            - entity: sensor.recycling
+              name: Recycling
+              type: sensor
+        entities:
+          - entity: sensor.trash
+            state_template: >-
+              {{ state_attr("sensor.trash","next_date") | as_timestamp |  timestamp_custom("%b %d")  }} ({{ state_attr("sensor.trash","days") }} days)
+          - entity: sensor.recycling
+            state_template: >-
+              {{ state_attr("sensor.recycling","next_date") | as_timestamp |  timestamp_custom("%b %d")  }} ({{ state_attr("sensor.recycling","days") }} days)
+      - type: map
+        aspect_ratio: 16:9
+        default_zoom: 30
+        entities:
+          - person.darren
+          - person.lindsay
+          - zone.home
+    path: default_view
+    title: Home
+  - badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - entities:
+            - switch.firetv
+            - switch.xbox_one
+            - switch.switch
+            - switch.tv
+            - switch.smarttv
+            title: Switch
+            type: entities
+          - entity: media_player.fire_tv
+            type: media-control
+      - entity: sensor.plex_recently_added
+        type: custom:upcoming-media-card
+        image_style: fanart
+        hide_unflagged: true
+        title: New On Plex...
+    icon: 'mdi:remote'
+    path: harmony-remote
+    title: Harmony Remote
+  - cards:
+      - type: vertical-stack
+        cards:
+          - type: picture-glance
+            title: Harmony
+            entities:
+              - switch.xbox_one
+              - switch.tv
+              - switch.smarttv
+              - switch.switch
+              - switch.firetv
+            state_image:
+              "PowerOff": /local/images/power_off.png
+              "Xbox One": /local/images/xbox_one_logo.png
+              "Fire TV": /local/images/wiiu_logo.png
+              "Smart TV": /local/images/windows_logo.png
+              "Switch": /local/images/nintendo_switch_logo.png
+              "TV": /local/images/sony_logo.png
+            entity: sensor.harmony_activity
+          - type: entity-filter
+            entities:
+              - sensor.xbox_live_name
+              - sensor.xbox_current
+            state_filter:
+              - 'Online'
+              - 'Home'
+              - 'Netflix'
+            show_empty: false
+      - type: vertical-stack
+        cards: 
+          - type: picture-glance
+            title: Yamaha Receiver
+            entities:
+              - switch.zone_1
+              - switch.audio_1
+              - switch.zone_2
+              - switch.audio_2
+            image: /local/images/sony_receiver.jpg
+          - type: conditional
+            conditions:
+              - entity: switch.zone_1
+                state: 'on'
+              - entity: switch.zone_2
+                state: 'on'
+            card:
+              type: entities
+              entities:
+                - entity: input_number.yamaha_receiver
+                  name: Zone 1 Volume
+                - entity: input_number.yamaha_receiver_zone_2
+                  name: Zone 2 Volume
+          - type: conditional
+            conditions:
+              - entity: switch.zone_1
+                state: 'on'
+              - entity: switch.zone_2
+                state: 'off'
+            card:
+              type: entities
+              entities:
+                - entity: input_number.yamaha_receiver
+                  name: Volume
+          - type: conditional
+            conditions:
+              - entity: switch.zone_1
+                state: 'off'
+              - entity: switch.zone_2
+                state: 'on'
+            card:
+              type: entities
+              entities:
+                - entity: input_number.yamaha_receiver_zone_2
+                  name: Volume
+    title: Harmony Remote 2

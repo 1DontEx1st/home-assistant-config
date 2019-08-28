@@ -1,0 +1,77 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+http:
+  base_url: !secret base_url
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+frontend:
+  themes: !include themes.yaml
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+switch: !include switch.yaml
+zone: !include zone.yaml
+
+homeassistant:
+  customize: !include customize.yaml
+  time_zone: America/New_York
+  whitelist_external_dirs:
+    - '/config/www/'
+
+notify:
+  - name: pushbullet_dg
+    platform: pushbullet
+    api_key: !secret pushbullet_key
+
+remote:
+  - platform: harmony
+    name: Living Room
+    host: 192.168.42.100
+
+sensor: !include sensor.yaml
+
+media_player:
+  - platform: plex
+  - platform: androidtv
+    name: Fire TV
+    host: 192.168.42.117
+    adbkey: "/config/android/adbkey"
+    device_class: firetv
+
+python_script:
+
+hacs:
+  token: !secret hacs_token
+  theme: true
+  python_script: true
+  appdaemon: true
+
+discovery:
+
+ios:
+
+#logger:
+#  logs:
+#    homeassistant.components.life360.device_tracker: debug
+
+lovelace:
+  mode: yaml
+
+weather:
+  - platform: darksky
+    api_key: !secret darksky_key
+    mode: daily
+
+speedtestdotnet:
+  monitored_conditions:
+    - ping
+    - download
+    - upload
+
