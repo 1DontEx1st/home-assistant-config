@@ -5,6 +5,8 @@ default_config:
 # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
 http:
   base_url: !secret base_url
+  ip_ban_enabled: True
+  login_attempts_threshold: 3 ### optional
 
 # Text to speech
 tts:
