@@ -22,37 +22,34 @@ views:
       - sensor.hacs
       - sun.sun
     cards:
-      - entities:
-          - lock.schlage_allegion_be469_touchscreen_deadbolt_locked
-          - automation.side_door_unlocked
-        title: Door locks
-        type: entities
-      - entity: weather.dark_sky
-        type: custom:weather-card
-        icons: "/community_plugin/weather-card/icons/"
 #      - entities:
-#          - sensor.trash
-#          - sensor.recycling
-#        show_header_toggle: false
-#        title: Pickup
+#        title: Door locks
 #        type: entities
       - type: 'custom:card-templater'
         card:
           type: horizontal-stack
           cards:
-            - entity: sensor.trash
+            - entity: sensor.trash_pickup
               name: Trash
               type: sensor
-            - entity: sensor.recycling
+            - entity: sensor.recycling_pickup
               name: Recycling
               type: sensor
+      - type: entities
         entities:
-          - entity: sensor.trash
-            state_template: >-
-              {{ state_attr("sensor.trash","next_date") | as_timestamp |  timestamp_custom("%b %d")  }} ({{ state_attr("sensor.trash","days") }} days)
-          - entity: sensor.recycling
-            state_template: >-
-              {{ state_attr("sensor.recycling","next_date") | as_timestamp |  timestamp_custom("%b %d")  }} ({{ state_attr("sensor.recycling","days") }} days)
+          - lock.schlage_allegion_be469_touchscreen_deadbolt_locked
+          - automation.side_door_unlocked
+          - sensor.darren_morning_commute
+          - sensor.darren_afternoon_commute
+        title: Stuff
+        show_header_toggle: false
+#        entities:
+#          - entity: sensor.trash_pickup
+#            state_template: >-
+#              {{ state_attr("sensor.trash","next_date") | as_timestamp | timestamp_custom("%b %d")  }} ({{ state_attr("sensor.trash","days") }} days)
+#          - entity: sensor.recycling_pickup
+#            state_template: >-
+#              {{ state_attr("sensor.recycling","next_date") | as_timestamp | timestamp_custom("%b %d")  }} ({{ state_attr("sensor.recycling","days") }} days)
       - type: map
         aspect_ratio: 16:9
         default_zoom: 30
@@ -60,6 +57,9 @@ views:
           - person.darren
           - person.lindsay
           - zone.home
+      - entity: weather.dark_sky
+        type: custom:weather-card
+        icons: "/community_plugin/weather-card/icons/"
     path: default_view
     title: Home
   - badges: []

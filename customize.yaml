@@ -56,8 +56,8 @@ switch.tv:
 switch.poweroff:
   friendly_name: Power Off
   icon: mdi:power
-sensor.harmony_activity:
-  friendly_name: Harmony Status
+#sensor.harmony_activity:
+#  friendly_name: Harmony Status
 sensor.xbox_current:
   friendly_name: Xbox App
 sensor.recycling:

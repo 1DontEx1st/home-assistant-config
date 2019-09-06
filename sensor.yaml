@@ -1,27 +1,3 @@
-  - platform: template
-    sensors:
-      harmony_activity:
-        value_template: >
-          {% if is_state("remote.living_room", 'on') %}
-            {{ states.remote.living_room.attributes.current_activity }}
-          {% else %}
-            PowerOff
-          {% endif %}
-      plex_now_playing:
-        value_template: >
-          {% if (is_state('media_player.plex_fire_tv', 'playing') or is_state('media_player.plex_fire_tv', 'paused')) %}
-            {% if is_state_attr('media_player.plex_fire_tv', 'media_content_type', 'music') %}
-              {{ state_attr('media_player.plex_fire_tv', 'session_username') }} {{ states('media_player.plex_fire_tv') }} {{ state_attr('media_player.plex_fire_tv', 'media_artist') }} - {{ state_attr('media_player.plex_fire_tv', 'media_title') }} (From {{ state_attr('media_player.plex_fire_tv', 'media_album_name') }})
-            {% elif is_state_attr('media_player.plex_fire_tv', 'media_content_type', 'tvshow') %}
-              {{ state_attr('media_player.plex_fire_tv', 'session_username') }} {{ states('media_player.plex_fire_tv') }} {{ state_attr('media_player.plex_fire_tv', 'media_series_title') }} S{{ state_attr('media_player.plex_fire_tv', 'media_season') }}E{{ state_attr('media_player.plex_fire_tv', 'media_episode') }} - {{ state_attr('media_player.plex_fire_tv', 'media_title') }} (From {{ state_attr('media_player.plex_fire_tv', 'media_library_name') }})
-            {% elif is_state_attr('media_player.plex_fire_tv', 'media_content_type', 'movie') %}
-              {{ state_attr('media_player.plex_fire_tv', 'session_username') }} {{ states('media_player.plex_fire_tv') }} {{ state_attr('media_player.plex_fire_tv', 'media_title') }} (From {{ state_attr('media_player.plex_fire_tv', 'media_library_name') }})
-            {% else %}
-              {{ state_attr('media_player.plex_fire_tv', 'session_username') }} {{ states('media_player.plex_fire_tv') }} unknown: {{ state_attr('media_player.plex_fire_tv', 'media_title') }}
-            {% endif %}
-          {% else %}
-            Idle
-          {% endif %}
   - platform: plex
     host: 172.17.0.7
   - platform: xbox_live
@@ -49,3 +25,37 @@
     api_key: !secret google_map_key
     origin: zone.home
     destination: !secret darren_work
+  - platform: template
+    sensors:
+      harmony_activity:
+        value_template: >
+          {% if is_state("remote.living_room", 'on') %}
+            {{ states.remote.living_room.attributes.current_activity }}
+          {% else %}
+            PowerOff
+          {% endif %}
+        friendly_name: Harmony Status
+      plex_now_playing:
+        value_template: >
+          {% if (is_state('media_player.plex_fire_tv', 'playing') or is_state('media_player.plex_fire_tv', 'paused')) %}
+            {% if is_state_attr('media_player.plex_fire_tv', 'media_content_type', 'music') %}
+              {{ state_attr('media_player.plex_fire_tv', 'session_username') }} {{ states('media_player.plex_fire_tv') }} {{ state_attr('media_player.plex_fire_tv', 'media_artist') }} - {{ state_attr('media_player.plex_fire_tv', 'media_title') }} (From {{ state_attr('media_player.plex_fire_tv', 'media_album_name') }})
+            {% elif is_state_attr('media_player.plex_fire_tv', 'media_content_type', 'tvshow') %}
+              {{ state_attr('media_player.plex_fire_tv', 'session_username') }} {{ states('media_player.plex_fire_tv') }} {{ state_attr('media_player.plex_fire_tv', 'media_series_title') }} S{{ state_attr('media_player.plex_fire_tv', 'media_season') }}E{{ state_attr('media_player.plex_fire_tv', 'media_episode') }} - {{ state_attr('media_player.plex_fire_tv', 'media_title') }} (From {{ state_attr('media_player.plex_fire_tv', 'media_library_name') }})
+            {% elif is_state_attr('media_player.plex_fire_tv', 'media_content_type', 'movie') %}
+              {{ state_attr('media_player.plex_fire_tv', 'session_username') }} {{ states('media_player.plex_fire_tv') }} {{ state_attr('media_player.plex_fire_tv', 'media_title') }} (From {{ state_attr('media_player.plex_fire_tv', 'media_library_name') }})
+            {% else %}
+              {{ state_attr('media_player.plex_fire_tv', 'session_username') }} {{ states('media_player.plex_fire_tv') }} unknown: {{ state_attr('media_player.plex_fire_tv', 'media_title') }}
+            {% endif %}
+          {% else %}
+            Idle
+          {% endif %}
+        friendly_name: Plex (Now Playing)
+      trash_pickup:
+        value_template: >
+          {{ state_attr("sensor.trash","next_date") | as_timestamp |  timestamp_custom("%b %d")  }} ({{ state_attr("sensor.trash","days") }} days)
+        icon_template: "{{state_attr('sensor.trash','icon')}}"
+      recycling_pickup:
+        value_template: >-
+          {{ state_attr("sensor.recycling","next_date") | as_timestamp |  timestamp_custom("%b %d")  }} ({{ state_attr("sensor.recycling","days") }} days)
+        icon_template: "{{state_attr('sensor.recycling','icon')}}"

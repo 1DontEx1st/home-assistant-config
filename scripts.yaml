@@ -2,3 +2,16 @@ refresh_customizations:
   sequence:
   - service: homeassistant.reload_core_config
   - service: python_script.touch
+
+start_plex:
+  sequence:
+  - service: remote.turn_on
+    entity_id: remote.living_room
+    data:
+      entity_id: remote.living_room
+      activity: 'Watch Fire TV'
+  - wait_template: "{{ is_state('sensor.harmony_activity','Watch Fire TV') }}"
+  - service: media_player.select_source
+    entity_id: media_player.fire_tv
+    data:
+      source: com.plexapp.android
