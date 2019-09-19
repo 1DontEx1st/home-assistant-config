@@ -11,45 +11,74 @@ resources:
     type: js
   - url: /community_plugin/lovelace-card-templater/lovelace-card-templater.js
     type: js
+  - url: /community_plugin/button-entity-row/button-entity-row.js
+    type: module
+  - url: /community_plugin/garbage-collection-card/garbage-collection-card.js
+    type: module
 title: Unicorn Circle
 views:
   - badges:
       - person.darren
       - person.lindsay
+      - sensor.ams_day
       - sensor.harmony_activity
       - sensor.plex_now_playing
       - sensor.plex
       - sensor.hacs
       - sun.sun
     cards:
-#      - entities:
-#        title: Door locks
-#        type: entities
-      - type: 'custom:card-templater'
-        card:
-          type: horizontal-stack
-          cards:
-            - entity: sensor.trash_pickup
-              name: Trash
-              type: sensor
-            - entity: sensor.recycling_pickup
-              name: Recycling
-              type: sensor
-      - type: entities
-        entities:
-          - lock.schlage_allegion_be469_touchscreen_deadbolt_locked
-          - automation.side_door_unlocked
-          - sensor.darren_morning_commute
-          - sensor.darren_afternoon_commute
-        title: Stuff
-        show_header_toggle: false
-#        entities:
-#          - entity: sensor.trash_pickup
-#            state_template: >-
-#              {{ state_attr("sensor.trash","next_date") | as_timestamp | timestamp_custom("%b %d")  }} ({{ state_attr("sensor.trash","days") }} days)
-#          - entity: sensor.recycling_pickup
-#            state_template: >-
-#              {{ state_attr("sensor.recycling","next_date") | as_timestamp | timestamp_custom("%b %d")  }} ({{ state_attr("sensor.recycling","days") }} days)
+      - type: vertical-stack
+        cards:
+          - type: custom:garbage-collection-card
+            entity: sensor.trash
+            icon_size: 35px
+            icon_color: green
+            hide_date: true
+          - type: custom:garbage-collection-card
+            entity: sensor.recycling
+            icon_color: '#0561ba'
+            hide_date: true
+          - entity: weather.dark_sky
+            type: custom:weather-card
+            icons: "/community_plugin/weather-card/icons/"
+      - type: vertical-stack
+        cards:
+          - type: conditional
+            conditions:
+              - entity: binary_sensor.morning
+                state: 'on'
+            card:
+              type: entities
+              entities:
+                - sensor.darren_work
+#              - sensor.darren_home
+                - sensor.lindsay_work
+#              - sensor.lindsay_gymnastics
+#              - sensor.lindsay_home
+ #           title: Travel
+              show_header_toggle: false
+          - type: conditional
+            conditions:
+              - entity: binary_sensor.morning
+                state: 'off'
+            card:
+              type: entities
+              entities:
+#                - sensor.darren_work
+              - sensor.darren_home
+#                - sensor.lindsay_work
+              - sensor.lindsay_gymnastics
+              - sensor.lindsay_home
+ #           title: Travel
+              show_header_toggle: false
+          - type: entities
+            entities:
+              - lock.schlage_allegion_be469_touchscreen_deadbolt_locked
+#              - automation.front_door_unlocked
+              - lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked
+#              - automation.side_door_unlocked
+  #          title: Doors
+            show_header_toggle: false
       - type: map
         aspect_ratio: 16:9
         default_zoom: 30
@@ -57,9 +86,6 @@ views:
           - person.darren
           - person.lindsay
           - zone.home
-      - entity: weather.dark_sky
-        type: custom:weather-card
-        icons: "/community_plugin/weather-card/icons/"
     path: default_view
     title: Home
   - badges: []
@@ -74,6 +100,13 @@ views:
             - switch.smarttv
             title: Switch
             type: entities
+          - type: "custom:button-entity-row"
+            buttons:
+              - entity: script.start_plex
+                icon: "mdi:plex"
+                name: Start Plex
+                style:
+                  - color: var(--primary-color)
           - entity: media_player.fire_tv
             type: media-control
       - entity: sensor.plex_recently_added
@@ -158,3 +191,26 @@ views:
                 - entity: input_number.yamaha_receiver_zone_2
                   name: Volume
     title: Harmony Remote 2
+  - title: playground
+    cards:
+      - type: custom:garbage-collection-card
+        entity: sensor.trash
+        icon_size: 35px
+        icon_color: green
+        hide_date: true
+      - type: custom:garbage-collection-card
+        entity: sensor.recycling
+        icon_color: '#0561ba'
+
+
+
+#      - type: 'custom:card-templater'
+#        card:
+#          type: horizontal-stack
+#          cards:
+#            - entity: sensor.trash_pickup
+#              name: Trash
+#              type: sensor
+#            - entity: sensor.recycling_pickup
+#              name: Recycling
+#              type: sensor

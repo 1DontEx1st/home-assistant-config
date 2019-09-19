@@ -1,5 +1,5 @@
-- id: '1566616270957'
-  alias: Side Door Unlocked
+- id: front_door_unlocked
+  alias: Front Door Unlocked
   trigger:
   - entity_id: lock.schlage_allegion_be469_touchscreen_deadbolt_locked
     from: locked
@@ -12,15 +12,40 @@
     value_template: '{{ not is_state(''person.lindsay'', ''home'') }}'
   action:
   - data:
-      message: '{{ now().strftime(''%Y-%m-%y %l:%M %p'') }}: {{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.attributes.friendly_name
+      message: '{{ now().strftime(''%Y-%m-%d %I:%M %p'') }}: {{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.attributes.friendly_name
         }} was {{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.state
         }} ({{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.attributes.lock_status
         }})'
     service: notify.ios_darreniphone
   - data:
-      message: '{{ now().strftime(''%Y-%m-%y %l:%M %p'') }}: {{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.attributes.friendly_name
+      message: '{{ now().strftime(''%Y-%m-%d %I:%M %p'') }}: {{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.attributes.friendly_name
         }} was {{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.state
         }} ({{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.attributes.lock_status
+        }})'
+    service: notify.ios_lindsays_iphone
+- id: side_door_unlocked
+  alias: Side Door Unlocked
+  trigger:
+  - entity_id: lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked
+    from: locked
+    platform: state
+    to: unlocked
+  condition:
+  - condition: template
+    value_template: '{{ not is_state(''person.darren'', ''home'') }}'
+  - condition: template
+    value_template: '{{ not is_state(''person.lindsay'', ''home'') }}'
+  action:
+  - data:
+      message: '{{ now().strftime(''%Y-%m-%d %I:%M %p'') }}: {{ states.lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked.attributes.friendly_name
+        }} was {{ states.lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked.state
+        }} ({{ states.lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked.attributes.lock_status
+        }})'
+    service: notify.ios_darreniphone
+  - data:
+      message: '{{ now().strftime(''%Y-%m-%d %I:%M %p'') }}: {{ states.lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked.attributes.friendly_name
+        }} was {{ states.lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked.state
+        }} ({{ states.lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked.attributes.lock_status
         }})'
     service: notify.ios_lindsays_iphone
 - id: HACS_Notification
@@ -46,59 +71,55 @@
   condition: []
   action:
   - data:
-      message: '{{ now().strftime(''%Y-%m-%d %l:%M %p'') }}: dash_test called'
+      message: '{{ now().strftime(''%Y-%m-%d %I:%M %p'') }}: dash_test called'
     service: notify.pushbullet_dg
 - id: '1566930049220'
-  alias: toggle_side_door_lock
+  alias: toggle_front_door_lock
   trigger:
   - event_data: {}
-    event_type: toggle_side_door_lock
+    event_type: toggle_front_door_lock
     platform: event
   condition: []
   action:
     service_template: "{% if is_state('lock.schlage_allegion_be469_touchscreen_deadbolt_locked',\
       \ 'locked') %}\n  lock.unlock\n{% else %}\n  lock.lock\n{% endif %}\n"
     entity_id: lock.schlage_allegion_be469_touchscreen_deadbolt_locked
-- id: update_darren_morning_commute_sensor
-  alias: "Commute - Update Darren's morning commute sensor"
+- id: update_darren_travel_work_sensor
+  alias: Commute - Update Darren's morning commute sensor
   initial_state: 'on'
   trigger:
-    - platform: time_pattern
-      minutes: '/2'
+  - platform: time_pattern
+    minutes: /2
   condition:
-    - condition: time
-      after: '06:30:00'
-      before: '09:00:00'
-    - condition: time
-      weekday:
-        - mon
-#        - tue
-        - wed
-        - thu
-#        - fri
+  - condition: time
+    after: 06:00:00
+    before: 09:00:00
+  - condition: time
+    weekday:
+    - mon
+    - wed
+    - thu
   action:
-    - service: homeassistant.update_entity
-      entity_id: sensor.darren_morning_commute
-- id: update_darren_afternoon_commute_sensor
-  alias: "Commute - Update Darren's afternoon commute sensor"
+  - service: homeassistant.update_entity
+    entity_id: sensor.darren_work
+- id: update_darren_travel_home_sensor
+  alias: Commute - Update Darren's afternoon commute sensor
   initial_state: 'on'
   trigger:
-    - platform: time_pattern
-      minutes: '/2'
+  - platform: time_pattern
+    minutes: /2
   condition:
-    - condition: time
-      after: '16:30:00'
-      before: '20:00:00'
-    - condition: time
-      weekday:
-        - mon
-#        - tue
-        - wed
-        - thu
-#        - fri
+  - condition: time
+    after: '16:30:00'
+    before: '20:00:00'
+  - condition: time
+    weekday:
+    - mon
+    - wed
+    - thu
   action:
-    - service: homeassistant.update_entity
-      entity_id: sensor.darren_afternoon_commute
+  - service: homeassistant.update_entity
+    entity_id: sensor.darren_home
 - id: start_plex
   alias: start_plex
   trigger:
@@ -107,27 +128,61 @@
     platform: event
   condition: []
   action:
-    - service: remote.turn_on
+  - service: remote.turn_on
+    entity_id: remote.living_room
+    data:
       entity_id: remote.living_room
-      data:
-        entity_id: remote.living_room
-        activity: 'Watch Fire TV'
-    - service: media_player.select_source
-      entity_id: media_player.fire_tv
-      data:
-        source: com.plexapp.android
-- id: alert_side_door_deadbolt_battery_low
-  alias: 'ALERT: Side Door Deadbolt Battery Low'
+      activity: Watch Fire TV
+  - service: media_player.select_source
+    entity_id: media_player.fire_tv
+    data:
+      source: com.plexapp.android
+- id: alert_front_door_deadbolt_battery_low
+  alias: 'ALERT: Front Door Deadbolt Battery Low'
   trigger:
   - platform: template
-    value_template: '{{ states.zwave.schlage_allegion_be469_touchscreen_deadbolt.attributes.battery_level | int < 30 }}'
+    value_template: '{{ states.zwave.schlage_allegion_be469_touchscreen_deadbolt.attributes.battery_level
+      | int < 30 }}'
   action:
   - data:
-      message: '{{ now().strftime(''%Y-%m-%y %l:%M %p'') }}: {{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.attributes.friendly_name }} has low battery! ({{ states.zwave.schlage_allegion_be469_touchscreen_deadbolt.attributes.battery_level }}%)'
+      message: '{{ now().strftime(''%Y-%m-%y %I:%M %p'') }}: {{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.attributes.friendly_name
+        }} has low battery! ({{ states.zwave.schlage_allegion_be469_touchscreen_deadbolt.attributes.battery_level
+        }}%)'
     service: notify.ios_darreniphone
   - data:
-      message: '{{ now().strftime(''%Y-%m-%y %l:%M %p'') }}: {{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.attributes.friendly_name }} has low battery! ({{ states.zwave.schlage_allegion_be469_touchscreen_deadbolt.attributes.battery_level }}%)'
+      message: '{{ now().strftime(''%Y-%m-%y %I:%M %p'') }}: {{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.attributes.friendly_name
+        }} has low battery! ({{ states.zwave.schlage_allegion_be469_touchscreen_deadbolt.attributes.battery_level
+        }}%)'
     service: notify.ios_lindsayiphone
   - data:
-      message: '{{ now().strftime(''%Y-%m-%y %l:%M %p'') }}: {{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.attributes.friendly_name }} has low battery! ({{ states.zwave.schlage_allegion_be469_touchscreen_deadbolt.attributes.battery_level }}%)'
+      message: '{{ now().strftime(''%Y-%m-%y %I:%M %p'') }}: {{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.attributes.friendly_name
+        }} has low battery! ({{ states.zwave.schlage_allegion_be469_touchscreen_deadbolt.attributes.battery_level
+        }}%)'
     service: notify.pushbullet_dg
+- id: harmony_plex
+  alias: Harmony Plex
+  trigger:
+  - platform: event
+    event_type: roku_command
+    event_data:
+      source_name: Home Assistant
+      type: keypress
+      key: Home
+  action:
+  - service: media_player.select_source
+    entity_id: media_player.fire_tv
+    data:
+      source: com.plexapp.android
+- id: 'update_ams_day'
+  alias: Update AMS Day
+  trigger:
+  - at: 00:01:00
+    platform: time
+  condition:
+  - condition: state
+    entity_id: binary_sensor.zach_school
+    state: 'on'
+  action:
+  - data:
+      entity_id: input_number.ams_counter
+    service: input_number.increment

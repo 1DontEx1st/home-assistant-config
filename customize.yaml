@@ -43,7 +43,7 @@ switch.xbox_one:
   icon: mdi:xbox
 switch.firetv:
   friendly_name: Fire TV
-  icon: mdi:television
+  icon: mdi:fire
 switch.smarttv:
   friendly_name: Smart TV
   icon: mdi:cast
@@ -56,9 +56,21 @@ switch.tv:
 switch.poweroff:
   friendly_name: Power Off
   icon: mdi:power
-#sensor.harmony_activity:
-#  friendly_name: Harmony Status
 sensor.xbox_current:
   friendly_name: Xbox App
 sensor.recycling:
   icon: mdi:recycle
+sensor.darren_morning_commute:
+  custom_ui_more_info: This is a test
+sensor.darren_home:
+  icon: mdi:home
+sensor.darren_work:
+  icon: mdi:briefcase
+zone.gymnastics:
+  icon: mdi:yoga
+sensor.lindsay_gymnastics:
+  icon: mdi:yoga
+sensor.lindsay_home:
+  icon: mdi:home
+sensor.lindsay_work:
+  icon: mdi:school

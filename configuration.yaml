@@ -20,12 +20,21 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 switch: !include switch.yaml
 zone: !include zone.yaml
+binary_sensor: !include binary_sensor.yaml
 
 homeassistant:
   customize: !include customize.yaml
   time_zone: America/New_York
   whitelist_external_dirs:
     - '/config/www/'
+
+input_number:
+  ams_counter:
+#    name: Slider
+#    initial: 2
+    min: 0
+    max: 360
+    step: 1
 
 notify:
   - name: pushbullet_dg
@@ -76,4 +85,12 @@ speedtestdotnet:
     - ping
     - download
     - upload
+
+emulated_roku:
+  servers:
+    - name: Home Assistant
+      listen_port: 8060
+      advertise_ip: 192.168.42.26
+      advertise_port: 8060
+#      host_ip: 192.168.42.26
 

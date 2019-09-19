@@ -16,15 +16,35 @@
     frequency: "odd-weeks"
     collection_days: "fri"
   - platform: google_travel_time
-    name: darren_afternoon_commute
+    name: Darren -> Home
     api_key: !secret google_map_key
-    origin: !secret darren_work
+    origin: person.darren
     destination: zone.home
+    scan_interval: 60
   - platform: google_travel_time
-    name: darren_morning_commute
+    name: Darren -> Work
     api_key: !secret google_map_key
-    origin: zone.home
+    origin: person.darren
     destination: !secret darren_work
+    scan_interval: 60
+  - platform: google_travel_time
+    name: Lindsay -> Home
+    api_key: !secret google_map_key
+    origin: person.lindsay
+    destination: zone.home
+    scan_interval: 60
+  - platform: google_travel_time
+    name: Lindsay -> Work
+    api_key: !secret google_map_key
+    origin: person.lindsay
+    destination: !secret lindsay_work
+    scan_interval: 60
+  - platform: google_travel_time
+    name: Lindsay -> Gymnastics
+    api_key: !secret google_map_key
+    origin: person.lindsay
+    destination: zone.gymnastics
+    scan_interval: 60
   - platform: template
     sensors:
       harmony_activity:
@@ -56,6 +76,11 @@
           {{ state_attr("sensor.trash","next_date") | as_timestamp |  timestamp_custom("%b %d")  }} ({{ state_attr("sensor.trash","days") }} days)
         icon_template: "{{state_attr('sensor.trash','icon')}}"
       recycling_pickup:
-        value_template: >-
+        value_template: >
           {{ state_attr("sensor.recycling","next_date") | as_timestamp |  timestamp_custom("%b %d")  }} ({{ state_attr("sensor.recycling","days") }} days)
         icon_template: "{{state_attr('sensor.recycling','icon')}}"
+      ams_day:
+        value_template: >
+          {{ (states("input_number.ams_counter") | int) % 6 }}
+        friendly_name: AMS Day
+
