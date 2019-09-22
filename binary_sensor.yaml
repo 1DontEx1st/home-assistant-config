@@ -20,3 +20,16 @@
   after: '22:00'
 #  after_offset: '-02:00'
   before: '11:00'
+
+- platform: template
+  sensors:
+    trash_pickup_soon:
+      value_template: >-
+        {{ state_attr("sensor.trash","days") < 3
+           and not (state_attr("sensor.trash","days") == 0
+               and states("binary_sensor.morning") == "off") }}
+    recycling_pickup_soon:
+      value_template: >-
+        {{ state_attr("sensor.recycling","days") < 3
+           and not (state_attr("sensor.recycling","days") == 0
+               and states("binary_sensor.morning") == "off") }}

@@ -6,6 +6,8 @@ person.darren:
   entity_picture: /local/images/darren.png
 person.lindsay:
   entity_picture: /local/images/lindsay.png
+sensor.ams_day:
+  entity_picture: /local/images/ams_logo.png
 device_tracker.lindsays_iphone:
   hidden: true
 device_tracker.darreniphone:

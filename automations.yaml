@@ -12,15 +12,15 @@
     value_template: '{{ not is_state(''person.lindsay'', ''home'') }}'
   action:
   - data:
-      message: '{{ now().strftime(''%Y-%m-%d %I:%M %p'') }}: {{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.attributes.friendly_name
-        }} was {{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.state
-        }} ({{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.attributes.lock_status
+      message: '{{ now().strftime(''%Y-%m-%d %I:%M %p'') }}: {{ state_attr("lock.schlage_allegion_be469_touchscreen_deadbolt_locked","friendly_name")
+        }} was {{ states("lock.schlage_allegion_be469_touchscreen_deadbolt_locked")
+        }} ({{ state_attr("lock.schlage_allegion_be469_touchscreen_deadbolt_locked","lock_status")
         }})'
     service: notify.ios_darreniphone
   - data:
-      message: '{{ now().strftime(''%Y-%m-%d %I:%M %p'') }}: {{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.attributes.friendly_name
-        }} was {{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.state
-        }} ({{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.attributes.lock_status
+      message: '{{ now().strftime(''%Y-%m-%d %I:%M %p'') }}: {{ state_attr("lock.schlage_allegion_be469_touchscreen_deadbolt_locked","friendly_name")
+        }} was {{ states("lock.schlage_allegion_be469_touchscreen_deadbolt_locked")
+        }} ({{ state_attr("lock.schlage_allegion_be469_touchscreen_deadbolt_locked","lock_status")
         }})'
     service: notify.ios_lindsays_iphone
 - id: side_door_unlocked
@@ -37,15 +37,15 @@
     value_template: '{{ not is_state(''person.lindsay'', ''home'') }}'
   action:
   - data:
-      message: '{{ now().strftime(''%Y-%m-%d %I:%M %p'') }}: {{ states.lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked.attributes.friendly_name
-        }} was {{ states.lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked.state
-        }} ({{ states.lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked.attributes.lock_status
+      message: '{{ now().strftime(''%Y-%m-%d %I:%M %p'') }}: {{ state_attr("lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked","friendly_name")
+        }} was {{ states("lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked")
+        }} ({{ state_attr("lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked","lock_status")
         }})'
     service: notify.ios_darreniphone
   - data:
-      message: '{{ now().strftime(''%Y-%m-%d %I:%M %p'') }}: {{ states.lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked.attributes.friendly_name
-        }} was {{ states.lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked.state
-        }} ({{ states.lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked.attributes.lock_status
+      message: '{{ now().strftime(''%Y-%m-%d %I:%M %p'') }}: {{ state_attr("lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked","friendly_name")
+        }} was {{ states("lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked")
+        }} ({{ state_attr("lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked","lock_status")
         }})'
     service: notify.ios_lindsays_iphone
 - id: HACS_Notification
@@ -141,22 +141,44 @@
   alias: 'ALERT: Front Door Deadbolt Battery Low'
   trigger:
   - platform: template
-    value_template: '{{ states.zwave.schlage_allegion_be469_touchscreen_deadbolt.attributes.battery_level
-      | int < 30 }}'
+    value_template: '{{ state_attr("zwave.schlage_allegion_be469_touchscreen_deadbolt","battery_level") != None
+      and state_attr("zwave.schlage_allegion_be469_touchscreen_deadbolt","battery_level") | int < 30 }}'
   action:
   - data:
-      message: '{{ now().strftime(''%Y-%m-%y %I:%M %p'') }}: {{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.attributes.friendly_name
-        }} has low battery! ({{ states.zwave.schlage_allegion_be469_touchscreen_deadbolt.attributes.battery_level
+      message: '{{ now().strftime(''%Y-%m-%y %I:%M %p'') }}: {{ state_attr("lock.schlage_allegion_be469_touchscreen_deadbolt_locked","friendly_name")
+        }} has low battery! ({{ state_attr("zwave.schlage_allegion_be469_touchscreen_deadbolt","battery_level")
         }}%)'
     service: notify.ios_darreniphone
   - data:
-      message: '{{ now().strftime(''%Y-%m-%y %I:%M %p'') }}: {{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.attributes.friendly_name
-        }} has low battery! ({{ states.zwave.schlage_allegion_be469_touchscreen_deadbolt.attributes.battery_level
+      message: '{{ now().strftime(''%Y-%m-%y %I:%M %p'') }}: {{ state_attr("lock.schlage_allegion_be469_touchscreen_deadbolt_locked","friendly_name")
+        }} has low battery! ({{ state_attr("zwave.schlage_allegion_be469_touchscreen_deadbolt","battery_level")
         }}%)'
-    service: notify.ios_lindsayiphone
+    service: notify.ios_lindsays_iphone
   - data:
-      message: '{{ now().strftime(''%Y-%m-%y %I:%M %p'') }}: {{ states.lock.schlage_allegion_be469_touchscreen_deadbolt_locked.attributes.friendly_name
-        }} has low battery! ({{ states.zwave.schlage_allegion_be469_touchscreen_deadbolt.attributes.battery_level
+      message: '{{ now().strftime(''%Y-%m-%y %I:%M %p'') }}: {{ state_attr("lock.schlage_allegion_be469_touchscreen_deadbolt_locked","friendly_name")
+        }} has low battery! ({{ state_attr("zwave.schlage_allegion_be469_touchscreen_deadbolt","battery_level")
+        }}%)'
+    service: notify.pushbullet_dg
+- id: alert_side_door_deadbolt_battery_low
+  alias: 'ALERT: Side Door Deadbolt Battery Low'
+  trigger:
+  - platform: template
+    value_template: '{{ state_attr("zwave.schlage_allegion_be469zp_connect_smart_deadbolt","battery_level") != None
+      and state_attr("zwave.schlage_allegion_be469zp_connect_smart_deadbolt","battery_level") | int < 30 }}'
+  action:
+  - data:
+      message: '{{ now().strftime(''%Y-%m-%y %I:%M %p'') }}: {{ state_attr("lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked","friendly_name")
+        }} has low battery! ({{ state_attr("zwave.schlage_allegion_be469zp_connect_smart_deadbolt","battery_level")
+        }}%)'
+    service: notify.ios_darreniphone
+  - data:
+      message: '{{ now().strftime(''%Y-%m-%y %I:%M %p'') }}: {{ state_attr("lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked","friendly_name")
+        }} has low battery! ({{ state_attr("zwave.schlage_allegion_be469zp_connect_smart_deadbolt","battery_level")
+        }}%)'
+    service: notify.ios_lindsays_iphone
+  - data:
+      message: '{{ now().strftime(''%Y-%m-%y %I:%M %p'') }}: {{ state_attr("lock.schlage_allegion_be469zp_connect_smart_deadbolt_locked","friendly_name")
+        }} has low battery! ({{ state_attr("zwave.schlage_allegion_be469zp_connect_smart_deadbolt","battery_level")
         }}%)'
     service: notify.pushbullet_dg
 - id: harmony_plex
@@ -173,7 +195,7 @@
     entity_id: media_player.fire_tv
     data:
       source: com.plexapp.android
-- id: 'update_ams_day'
+- id: update_ams_day
   alias: Update AMS Day
   trigger:
   - at: 00:01:00
@@ -186,3 +208,13 @@
   - data:
       entity_id: input_number.ams_counter
     service: input_number.increment
+- id: ifttt_unlock_side_door
+  trigger:
+    platform: event
+    event_type: ifttt_webhook_received
+    event_data:
+      action: call_service
+  action:
+    service_template: '{{ trigger.event.data.service }}'
+    data_template:
+      entity_id: '{{ trigger.event.data.entity_id }}'

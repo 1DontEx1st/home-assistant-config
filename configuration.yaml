@@ -14,6 +14,7 @@ tts:
 
 frontend:
   themes: !include themes.yaml
+  javascript_version: es5
 
 group: !include groups.yaml
 automation: !include automations.yaml
@@ -69,7 +70,9 @@ discovery:
 ios:
 
 #logger:
+#  default: info
 #  logs:
+#    hacs: debug
 #    homeassistant.components.life360.device_tracker: debug
 
 lovelace:
