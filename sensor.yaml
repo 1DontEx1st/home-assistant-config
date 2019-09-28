@@ -1,50 +1,73 @@
   - platform: plex
-    host: 172.17.0.7
+    host: localhost
+
   - platform: xbox_live
     api_key: !secret xbox_live_key
     xuid: 
       - !secret xbox_live_xuid
+    scan_interval: 300
+
   - platform: plex_recently_added
-    host: 172.17.0.7
+    name: Recently-added Movies
+    host: localhost
     token: !secret plex_recent_token
+    section_types:
+    - movie
+    max: 15
+
+  - platform: plex_recently_added
+    name: Recently-added TV
+    host: localhost
+    token: !secret plex_recent_token
+    section_types:
+    - show
+    max: 15
+
   - platform: garbage_collection
     name: trash
     frequency: "weekly"
     collection_days: "fri"
+
   - platform: garbage_collection
     name: recycling
     frequency: "odd-weeks"
     collection_days: "fri"
+
   - platform: google_travel_time
     name: Darren -> Home
     api_key: !secret google_map_key
     origin: person.darren
     destination: zone.home
-    scan_interval: 60
+    scan_interval: 3600
+
   - platform: google_travel_time
     name: Darren -> Work
     api_key: !secret google_map_key
     origin: person.darren
     destination: !secret darren_work
-    scan_interval: 60
+    scan_interval: 3600
+
   - platform: google_travel_time
     name: Lindsay -> Home
     api_key: !secret google_map_key
     origin: person.lindsay
     destination: zone.home
-    scan_interval: 60
+    scan_interval: 3600
+
   - platform: google_travel_time
     name: Lindsay -> Work
     api_key: !secret google_map_key
     origin: person.lindsay
     destination: !secret lindsay_work
-    scan_interval: 60
+    scan_interval: 3600
+
   - platform: google_travel_time
     name: Lindsay -> Gymnastics
     api_key: !secret google_map_key
     origin: person.lindsay
     destination: zone.gymnastics
-    scan_interval: 60
+    scan_interval: 3600
+
   - platform: template
     sensors:
       harmony_activity:
@@ -81,6 +104,6 @@
         icon_template: "{{state_attr('sensor.recycling','icon')}}"
       ams_day:
         value_template: >
-          {{ (states("input_number.ams_counter") | int) % 6 }}
+          {{ (states("input_number.ams_counter") | int) % 6 + 1}}
         friendly_name: AMS Day
 

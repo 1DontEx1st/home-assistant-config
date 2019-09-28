@@ -89,7 +89,7 @@
   initial_state: 'on'
   trigger:
   - platform: time_pattern
-    minutes: /2
+    minutes: /5
   condition:
   - condition: time
     after: 06:00:00
@@ -107,7 +107,7 @@
   initial_state: 'on'
   trigger:
   - platform: time_pattern
-    minutes: /2
+    minutes: /5
   condition:
   - condition: time
     after: '16:30:00'
@@ -218,3 +218,13 @@
     service_template: '{{ trigger.event.data.service }}'
     data_template:
       entity_id: '{{ trigger.event.data.entity_id }}'
+- alias: 'Start HomeKit'
+  trigger:
+    - platform: event
+      event_type: zwave.network_ready
+    - platform: event
+      event_type: zwave.network_complete
+    - platform: event
+      event_type: zwave.network_complete_some_dead
+  action:
+    - service: homekit.start

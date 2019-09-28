@@ -53,7 +53,7 @@ media_player:
   - platform: plex
   - platform: androidtv
     name: Fire TV
-    host: 192.168.42.117
+    host: 192.168.42.119
     adbkey: "/config/android/adbkey"
     device_class: firetv
 
@@ -66,12 +66,15 @@ hacs:
   appdaemon: true
 
 discovery:
+  ignore:
+    - igd
 
 ios:
 
 #logger:
 #  default: info
 #  logs:
+#    homeassistant.components.google_travel_time: debug
 #    hacs: debug
 #    homeassistant.components.life360.device_tracker: debug
 
@@ -97,3 +100,16 @@ emulated_roku:
       advertise_port: 8060
 #      host_ip: 192.168.42.26
 
+homekit:
+  auto_start: false
+  filter:
+    exclude_domains:
+      - automation
+      - input_boolean
+      - script
+    exclude_entities:
+      - sensor.darren_home
+      - sensor.darren_work
+      - sensor.lindsay_home
+      - sensor.lindsay_work
+      - sensor.lindsay_gymnastics

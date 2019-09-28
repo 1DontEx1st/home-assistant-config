@@ -36,11 +36,6 @@ views:
             type: custom:weather-card
             icons: "/community_plugin/weather-card/icons/"
           - break
-          - type: glance
-            entities:
-              - sensor.harmony_activity
-              - sensor.plex_now_playing
-              - sensor.plex
           - type: conditional
             conditions:
               - entity: binary_sensor.trash_pickup_soon
@@ -61,6 +56,11 @@ views:
               icon_color: '#0561ba'
               icon_size: 55px
               hide_date: true
+          - type: glance
+            entities:
+              - sensor.harmony_activity
+              - sensor.plex_now_playing
+              - sensor.plex
           - type: conditional
             conditions:
               - entity: binary_sensor.morning
@@ -97,32 +97,45 @@ views:
               - zone.home
     path: default_view
     title: Home
-  - badges: []
+  - panel: true
     cards:
-      - type: vertical-stack
+      - type: custom:layout-card
+        layout: vertical
+        max_width: [35%, 30%, 35%]
         cards:
-          - entities:
-            - switch.firetv
-            - switch.xbox_one
-            - switch.switch
-            - switch.tv
-            - switch.smarttv
-            title: Switch
-            type: entities
-          - type: "custom:button-entity-row"
-            buttons:
-              - entity: script.start_plex
-                icon: "mdi:plex"
-                name: Start Plex
-                style:
-                  - color: var(--primary-color)
-          - entity: media_player.fire_tv
-            type: media-control
-      - entity: sensor.plex_recently_added
-        type: custom:upcoming-media-card
-        image_style: fanart
-        hide_unflagged: true
-        title: New On Plex...
+          - entity: sensor.recently_added_tv
+            type: custom:upcoming-media-card
+            image_style: fanart
+            hide_unflagged: true
+            title: Recently-added TV
+            max: 15
+          - break
+          - type: vertical-stack
+            cards:
+              - entities:
+                - switch.firetv
+                - switch.xbox_one
+                - switch.switch
+                - switch.tv
+                - switch.smarttv
+                title: Harmony Remote
+                type: entities
+              - type: "custom:button-entity-row"
+                buttons:
+                  - entity: script.start_plex
+                    icon: "mdi:plex"
+                    name: Start Plex
+                    style:
+                      - color: var(--primary-color)
+              - entity: media_player.fire_tv
+                type: media-control
+          - break
+          - entity: sensor.recently_added_movies
+            type: custom:upcoming-media-card
+            image_style: fanart
+            hide_unflagged: true
+            title: Recently-added Movies
+            max: 15
     icon: 'mdi:remote'
     path: harmony-remote
     title: Harmony Remote
