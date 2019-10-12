@@ -76,3 +76,5 @@ sensor.lindsay_home:
   icon: mdi:home
 sensor.lindsay_work:
   icon: mdi:school
+light.55002573dc4f225b92d5:
+  friendly_name: Light over sink

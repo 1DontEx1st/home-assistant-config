@@ -112,14 +112,34 @@ views:
           - break
           - type: vertical-stack
             cards:
-              - entities:
-                - switch.firetv
-                - switch.xbox_one
-                - switch.switch
-                - switch.tv
-                - switch.smarttv
-                title: Harmony Remote
-                type: entities
+              - type: picture-glance
+                title: Harmony
+                entities:
+                  - switch.xbox_one
+                  - switch.tv
+                  - switch.smarttv
+                  - switch.switch
+                  - switch.firetv
+                camera_image: camera.plex_image
+#                state_image:
+#                  "PowerOff": /local/images/power_off.png
+#                  "Xbox One": /local/images/xbox_one_logo.png
+#                  "Watch Fire TV": camera.plex_image
+#                  "Smart TV": /local/images/windows_logo.png
+#                  "Switch": /local/images/nintendo_switch_logo.png
+#                  "TV": /local/images/sony_logo.png
+                entity: sensor.harmony_activity
+
+#              - entities:
+#                - switch.firetv
+#                - switch.xbox_one
+#                - switch.switch
+#                - switch.tv
+#                - switch.smarttv
+#                title: Harmony Remote
+#                type: entities
+
+
               - type: "custom:button-entity-row"
                 buttons:
                   - entity: script.start_plex
@@ -127,8 +147,8 @@ views:
                     name: Start Plex
                     style:
                       - color: var(--primary-color)
-              - entity: media_player.fire_tv
-                type: media-control
+              - type: media-control
+                entity: media_player.plex_fire_tv
           - break
           - entity: sensor.recently_added_movies
             type: custom:upcoming-media-card

@@ -71,12 +71,13 @@ discovery:
 
 ios:
 
-#logger:
-#  default: info
-#  logs:
+logger:
+  default: warning
+  logs:
 #    homeassistant.components.google_travel_time: debug
 #    hacs: debug
 #    homeassistant.components.life360.device_tracker: debug
+    homeassistant.components.generic: debug
 
 lovelace:
   mode: yaml
@@ -106,10 +107,25 @@ homekit:
     exclude_domains:
       - automation
       - input_boolean
-      - script
+#      - script
     exclude_entities:
       - sensor.darren_home
       - sensor.darren_work
       - sensor.lindsay_home
       - sensor.lindsay_work
       - sensor.lindsay_gymnastics
+
+tuya:
+  username: !secret tuya_user
+  password: !secret tuya_pass
+  country_code: "1"
+
+camera:
+  - platform: generic
+    name: plex_image
+    still_image_url: >
+      {% if states('media_player.plex_fire_tv') == 'playing' %}
+        {{ state_attr('media_player.plex_fire_tv', 'entity_picture') }}
+      {% else %}
+        /local/images/plex_black.png
+      {% endif %}
